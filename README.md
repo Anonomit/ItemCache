@@ -27,7 +27,7 @@ local ItemCache = LibStub"ItemCache"
 Install as you would with any other addon.
 
 For developers:
-You can include ItemCache as a library in whatever addon you want (for example in a libs/ folder). Make sure the toc file includes SemVer.xml or SemVer.lua. LibStub is a required library, so be sure to include that too (if it isn't already). Additionally, make sure that you set ItemCache as an optional dependency in the toc file. If the addon is found and enabled, it will take precedence and data will persist between sessions.
+You can include ItemCache as a library in whatever addon you want (for example in a libs/ folder). The toc file of your addon can include ItemCache.xml or ItemCache.lua. When ItemCache is embedded as a library, its only dependence is LibStub. Additionally, make sure that you set ItemCache as an optional dependency in the toc file. If the addon is found and enabled, it will take precedence and data will persist between sessions.
 
 
 Write this in any lua file where you want to use it:
