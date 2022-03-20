@@ -8,7 +8,7 @@ Can be run standalone to store data between sessions, or can be embedded as a li
 
 # Documentation
 
-WIP.
+Check the [wiki](https://github.com/Anonomit/ItemCache/wiki) (WIP).
 
 
 
