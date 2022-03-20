@@ -1,0 +1,21 @@
+## Interface: 20503
+## Version: 0.0.0
+## Author: Anonomit
+
+## Title: ItemCache
+## Notes: Caches item data returned by GetItemInfo() and more. Can be run standalone to store data between sessions, or can be embedded as a library.
+
+## SavedVariables: ItemCacheDB, ItemCacheStorage
+
+## X-Embeds: LibStub, Ace3
+
+
+embeds.xml
+
+Config.lua
+
+locales.xml
+
+ItemCache.lua
+
+

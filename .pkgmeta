@@ -1,0 +1,9 @@
+package-as: ItemCache
+enable-nolib-creation: no
+
+ignore:
+    - README.md
+
+manual-changelog:
+    filename: CHANGELOG.html
+    markup-type: html
