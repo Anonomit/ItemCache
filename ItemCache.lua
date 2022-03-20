@@ -35,41 +35,6 @@ end
 
 
 
-
-
---[[
-
-ItemCache:Item | ItemCache:Get
-  ItemCache:Item(id[, suffix])
-  ItemCache:Item("item:12345")
-  ItemCache:Item(item)
-
-ItemCache:DoesItemExistByID
-  ItemCache:DoesItemExistByID(id)
-
-ItemCache:FormatSearchText
-  ItemCache:FormatSearchText(text)
-
-ItemCache:Cache
-  ItemCache:Cache(itemsList)
-
-ItemCache:OnCache
-  ItemCache:OnCache(itemsList, func, ...)
-    func(itemsList, ...)
-
-ItemCache:GetItemInfo
-  ItemCache:GetItemInfo(id)
-  ItemCache:GetItemInfo("item:12345")
-  ItemCache:GetItemInfo(item)
-
-ItemCache:Filter
-  ItemCache:Filter(func)
-    func(item, id, suffix)
-
---]]
-
-
-
 local assert            = assert
 local type              = type
 local next              = next
@@ -669,7 +634,6 @@ local itemMeta = {
 }
 
 function ItemCache:DoesItemExistByID(id)
-  ItemDB:Init()
   if not DoesItemExistByID(id) then
     return false
   end
@@ -690,7 +654,6 @@ function IsItem(item)
 end
 
 local function MakeItem(id, suffix)
-  ItemDB:Init()
   if suffix == 0 then
     suffix = nil
   end
@@ -784,14 +747,12 @@ end
 
 -- check if an item is in storage
 function ItemDB:IsStored(item)
-  ItemDB:Init()
   local id, suffix = item:GetIDSuffix()
   return storage[id] and storage[id][suffix or 0] and true or false
 end
 
 -- save an item into storage
 function ItemDB:Store(item)
-  ItemDB:Init()
   if not storage[item:GetID()] then
     if not item:GetSuffix() then
       storage[item:GetID()] = {[0] = private(item)}
@@ -1570,13 +1531,7 @@ end
 
 
 if not IsStandalone then
-  local frame = CreateFrame"Frame"
-  frame:RegisterEvent"ADDON_LOADED"
-  frame:SetScript("OnEvent", function(_, event, name)
-    if name == HOST_ADDON_NAME then
-      ItemDB:Init()
-    end
-  end)
+  ItemDB:Init()
 end
 
 
