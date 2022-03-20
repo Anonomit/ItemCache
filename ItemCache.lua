@@ -1336,6 +1336,10 @@ end
 function Item:GetLink()
   return self:GetInfoPacked()[2]
 end
+function Item:GetNameLink()
+  local name, link = self:GetInfo()
+  return name, link
+end
 function Item:GetTexture()
   return self:GetInfoPacked()[10]
 end
