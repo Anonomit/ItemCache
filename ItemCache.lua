@@ -44,11 +44,12 @@ local getmetatable      = getmetatable
 local setmetatable      = setmetatable
 local tonumber          = tonumber
 
+local format            = format
 local strsplit          = strsplit
 local wipe              = wipe
 local GetMouseFocus     = GetMouseFocus
 local DoesItemExistByID = C_Item.DoesItemExistByID
-local GetItemInfo       = GetItemInfo
+local GetItemInfo       = GetItemInfo -- removes the need to bypass own hook
 local UnitExists        = UnitExists
 local UnitClass         = UnitClass
 
@@ -56,7 +57,6 @@ local strmatch          = string.match
 local strfind           = string.find
 local strgmatch         = string.gmatch
 local strgsub           = string.gsub
-local strformat         = string.format
 local tblinsert         = table.insert
 local tblremove         = table.remove
 local floor             = math.floor
@@ -129,8 +129,8 @@ local CLASS_MAP_TO_ID = {}
 for i = 1, GetNumClasses() do
   local name, file, id = GetClassInfo(i)
   if name then
-    local maleName, femaleName = LOCALIZED_CLASS_NAMES_MALE[file], LOCALIZED_CLASS_NAMES_FEMALE[file]
-    for _, v in ipairs{name, file, id, maleName, femaleName} do
+    local maleNames, femaleNames = LOCALIZED_CLASS_NAMES_MALE[file], LOCALIZED_CLASS_NAMES_FEMALE[file]
+    for _, v in ipairs{name, file, id, maleNames, femaleNames} do
       CLASS_MAP_TO_ID[v] = id
     end
   end
@@ -487,7 +487,7 @@ end
 
 
 
-Queue = {}
+local Queue = {}
 local queueMeta = {
   __index    = Queue,
   __tostring = function(self) return "Queue" end,
@@ -610,16 +610,6 @@ function CallbackController:IsCancelled()
 end
 
 
--- debug
-function CallbackController:GetQueue()
-  return private(self).queue
-end
-function CallbackController:GetItems()
-  return private(self).items
-end
-
-
-
 local storage
 
 local matchMeta = {}
@@ -639,7 +629,7 @@ function ItemCache:DoesItemExistByID(id)
   end
   if storage[id] then
     for suffix, itemPrivate in pairs(storage[id]) do
-      if suffix ~= 0 then 
+      if suffix ~= 0 then
         return true
       elseif itemPrivate.dne then
         return false
@@ -649,7 +639,7 @@ function ItemCache:DoesItemExistByID(id)
   return true
 end
 
-function IsItem(item)
+local function IsItem(item)
   return type(item) == "table" and getmetatable(item) == matchMeta
 end
 
@@ -657,7 +647,7 @@ local function MakeItem(id, suffix)
   if suffix == 0 then
     suffix = nil
   end
-  local facade = {id, suffix} -- this table could be used to rebuild the Item without a metatable (like after being stored in savedvars). it is NOT protected from editing, and the user can change it if they'd like
+  local facade = {id, suffix} -- this table could be used to rebuild the Item without a metatable (like after being stored in savedvars). it is NOT protected from editing, but should not be changed
   local item -- this table is protected from editing, and contains the actual id and suffix used by Item
   if storage[id] and storage[id][suffix or 0] then
     item = storage[id][suffix or 0]
@@ -778,10 +768,7 @@ function ItemDB:Filter(func)
 end
 
 function ItemDB:GetItemInfoPacked(...)
-  self.GetItemInfoHook = false
-  local info = {GetItemInfo(...)}
-  self.GetItemInfoHook = true
-  return info
+  return {GetItemInfo(...)}
 end
 
 function ItemDB:AddQueryItems(callbackController)
@@ -1079,7 +1066,7 @@ function ItemDB:Init()
   -- Shut down if a newer version is found
   local timer = C_Timer.NewTicker(1, function()
     local _, minor = LibStub:GetLibrary(ADDON_NAME)
-    if minor > MINOR then
+    if minor ~= MINOR then
       timer:Cancel()
       self:Destructor()
     end
