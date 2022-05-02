@@ -560,7 +560,7 @@ local function MakeCallbackController(_, items, retrieveMode, callback, ...)
     callback       = callback,
     itemsRemaining = #queue,
     max            = #queue,
-    speed          = 0,
+    speed          = 1,
     suspended      = false,
     cancelled      = false,
   })
