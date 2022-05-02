@@ -704,7 +704,7 @@ function ItemCache:Item(arg, suffix)
     return arg
   else
     local id, suffix = InterpretItem(arg, suffix)
-    assert(id, "Bad Item format.")
+    assert(id, format("Bad Item format: %s", arg and tostring(arg) or "nil"))
     return ItemDB:Get(id, suffix)
   end
   return nil
@@ -1079,7 +1079,7 @@ local function Items_OnCacheOrLoad(items, self, retrieveMode, func, ...)
   local IsRetrieved = retrieveModes[retrieveMode].IsRetrieved
   for _, item in pairs(items) do
     local id, suffix = InterpretItem(item)
-    assert(id, "Bad Item format.")
+    assert(id, format("Bad Item format: %s", item and tostring(item) or "nil"))
     local loadItem = true
     if not ItemCache:DoesItemExistByID(id) then
       loadItem = false
