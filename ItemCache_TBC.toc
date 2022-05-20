@@ -1,5 +1,5 @@
-## Interface: 20503
-## Version: 0.0.0
+## Interface: 20504
+## Version: 1.0.0
 ## Author: Anonomit
 
 ## Title: ItemCache
