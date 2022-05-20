@@ -1321,17 +1321,17 @@ function Item:Matches(text)
 end
 
 function Item:GetName()
-  return self:GetInfoPacked()[1]
+  return (select(1, self:GetInfo()))
 end
 function Item:GetLink()
-  return self:GetInfoPacked()[2]
+  return (select(2, self:GetInfo()))
 end
 function Item:GetNameLink()
   local name, link = self:GetInfo()
   return name, link
 end
 function Item:GetTexture()
-  return ({GetItemInfoInstant(self:GetString())})[5]
+  return (select(5, GetItemInfoInstant(self:GetString())))
 end
 Item.GetIcon = Item.GetTexture
 function Item:GetNameLinkTexture()
@@ -1341,10 +1341,10 @@ end
 Item.GetNameLinkIcon = Item.GetNameLinkTexture
 
 function Item:GetType()
-  return ({GetItemInfoInstant(self:GetString())})[2]
+  return (select(2, GetItemInfoInstant(self:GetString())))
 end
 function Item:GetSubType()
-  return ({GetItemInfoInstant(self:GetString())})[3]
+  return (select(3, GetItemInfoInstant(self:GetString())))
 end
 function Item:GetTypeSubType()
   local _, itemType, itemSubType = GetItemInfoInstant(self:GetString())
@@ -1352,18 +1352,18 @@ function Item:GetTypeSubType()
 end
 
 function Item:GetQuality()
-  return self:GetInfoPacked()[3]
+  return (select(3, self:GetInfo()))
 end
 
 function Item:GetSellPrice()
-  return self:GetInfoPacked()[11]
+  return (select(11, self:GetInfo()))
 end
 Item.GetVendorPrice = Item.GetSellPrice
 Item.GetPrice       = Item.GetSellPrice
 Item.GetValue       = Item.GetSellPrice
 
 function Item:GetBindType()
-  return self:GetInfoPacked()[14]
+  return (select(14, self:GetInfo()))
 end
 function Item:DoesNotBind()    return self:GetBindType() == LE_ITEM_BIND_NONE       end
 function Item:CanBind()        return self:GetBindType() ~= LE_ITEM_BIND_NONE       end
@@ -1377,7 +1377,7 @@ Item.IsBoU = Item.IsBindOnUse
 
 
 function Item:GetEquipLocation()
-  return ({GetItemInfoInstant(self:GetString())})[4]
+  return (select(4, GetItemInfoInstant(self:GetString())))
 end
 function Item:IsEquippable()     return self:GetEquipLocation() ~= ""                       and self:GetEquipLocation() ~= "INVTYPE_NON_EQUIP" end
 function Item:IsHelm()           return self:GetEquipLocation() == "INVTYPE_HEAD"           end
