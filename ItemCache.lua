@@ -489,7 +489,7 @@ end
 
 local Queue = {}
 local queueMeta = {
-  __index    = Queue,
+  __index    = function(_, k) assert(Queue[k], "Queue has no field: " .. tostring(k) .. ". Make sure ItemCache is up to date.") return Queue[k] end,
   __tostring = function(self) return "Queue" end,
 }
 local function MakeQueue(_, vals)
@@ -541,7 +541,7 @@ local retrieveModes = {
 
 local CallbackController = {}
 local callbackControllerMeta = {
-  __index    = CallbackController,
+  __index    = function(_, k) assert(CallbackController[k], "CallbackController has no field: " .. tostring(k) .. ". Make sure ItemCache is up to date.") return CallbackController[k] end,
   __tostring = function(self) return "CallbackController" end,
 }
 local function MakeCallbackController(_, items, retrieveMode, callback, ...)
@@ -614,7 +614,7 @@ local storage
 
 local matchMeta = {}
 local itemMeta = {
-  __index     = Item,
+  __index     = function(_, k) assert(Item[k], "Item has no field: " .. tostring(k) .. ". Make sure ItemCache is up to date.") return Item[k] end,
   __newindex  = function(self, k, v) error("Item cannot be modified") end,
   __metatable = matchMeta,
   __eq        = function(item1, item2) return item1:GetID() == item2:GetID() and item1:GetSuffix() == item2:GetSuffix() end,
