@@ -29,6 +29,7 @@ healingBoots:OnCache(function(item)
 end) -- Prints the item link as soon as the item is in the cache. Also loads the item if it is not yet cached.
 
 print(healingBoots:IsCached()) -- Returns true if the boots have been seen before, false otherwise
+print(healingBoots:IsLoaded()) -- Returns true if the boots are currently loaded by the game (default GetItemInfo will be populated), false otherwise
 healingBoots:Load() -- Attempts to load the item into memory so that the default GetItemInfo will be populated
 healingBoots:Cache() -- Same as above but does nothing if the item has already been seen by ItemCache
 
@@ -64,6 +65,6 @@ This method wraps the global function of the same name. It can be used in place 
 
 ItemCache will only store data between sessions if it is running as an addon.
 
-All item data will be thrown out when WoW updates. This is intentional.
+The cache will be emptied when WoW updates. This is intentional.
 
-The cache is locale-specific. Only the cache for the current locale is active.
+The cache is locale-specific. Items cached in enUs will not be considered if the locale is no longer set to enUs.
