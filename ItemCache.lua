@@ -1355,6 +1355,18 @@ function Item:GetQuality()
   return (select(3, self:GetInfo()))
 end
 
+function Item:GetLevel()
+  return (select(4, self:GetInfo()))
+end
+
+function Item:GetMinLevel()
+  return (select(5, self:GetInfo()))
+end
+
+function Item:GetDetailedLevelInfo()
+  return GetDetailedItemLevelInfo(self:GetString())
+end
+
 function Item:GetSellPrice()
   return (select(11, self:GetInfo()))
 end
