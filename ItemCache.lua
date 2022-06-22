@@ -1163,6 +1163,9 @@ Item.GetId = Item.GetID
 function Item:GetSuffix()
   return private(self).suffix
 end
+function Item:HasSuffix()
+  return self:GetSuffix() ~= nil
+end
 function Item:GetIDSuffix()
   return self:GetID(), self:GetSuffix()
 end
