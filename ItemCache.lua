@@ -545,26 +545,28 @@ local callbackControllerMeta = {
   __tostring = function(self) return "CallbackController" end,
 }
 local function MakeCallbackController(_, items, retrieveMode, callback, ...)
-  local callbackController = {...}
   local queue = {}
   for id, suffixItems in pairs(items) do
     for suffix, item in pairs(suffixItems) do
       tblinsert(queue, item)
     end
   end
-  setPrivate(callbackController, {
-    items          = items,
-    queue          = Queue(queue),
-    Retrieve       = retrieveModes[retrieveMode].Retrieve,
-    IsRetrieved    = retrieveModes[retrieveMode].IsRetrieved,
-    callback       = callback,
-    itemsRemaining = #queue,
-    max            = #queue,
-    speed          = 1,
-    suspended      = false,
-    cancelled      = false,
-  })
-  return setmetatable(callbackController, callbackControllerMeta)
+  
+  local callbackControllerPrivate          = {...}
+  callbackControllerPrivate.items          = items;
+  callbackControllerPrivate.queue          = Queue(queue);
+  callbackControllerPrivate.Retrieve       = retrieveModes[retrieveMode].Retrieve;
+  callbackControllerPrivate.IsRetrieved    = retrieveModes[retrieveMode].IsRetrieved;
+  callbackControllerPrivate.callback       = callback;
+  callbackControllerPrivate.itemsRemaining = #queue;
+  callbackControllerPrivate.max            = #queue;
+  callbackControllerPrivate.speed          = 1;
+  callbackControllerPrivate.suspended      = false;
+  callbackControllerPrivate.cancelled      = false;
+  
+  local callbackController = {}
+  setPrivate(callbackController, callbackControllerPrivate);
+  return setmetatable(callbackController, callbackControllerMeta);
 end
 setmetatable(CallbackController, {__call = MakeCallbackController})
 function CallbackController:GetSize()
