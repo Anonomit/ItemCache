@@ -889,14 +889,26 @@ function ItemDB:InitQueryCallbacks()
   end)
 end
 
+function ItemDB:RegisterEvents(frame)
+  for _, event in ipairs(frame.events or {}) do
+    frame:RegisterEvent(event)
+  end
+end
+
+function ItemDB:UnregisterEvents(frame)
+  for _, event in ipairs(frame.events or {}) do
+    frame:UnregisterEvent(event)
+  end
+end
+
 function ItemDB:InitItemInfoListener()
   self.ItemInfoListenerFrame = CreateFrame("Frame", nil, UIItem)
   self.ItemInfoListenerFrame:SetPoint("TOPLEFT", UIItem, "TOPLEFT", 0, 0)
   self.ItemInfoListenerFrame:SetSize(0, 0)
   self.ItemInfoListenerFrame:Show()
   
-  self.ItemInfoListenerFrame:RegisterEvent"GET_ITEM_INFO_RECEIVED"
-  self.ItemInfoListenerFrame:RegisterEvent"ITEM_DATA_LOAD_RESULT"
+  self.ItemInfoListenerFrame.events = {"GET_ITEM_INFO_RECEIVED", "ITEM_DATA_LOAD_RESULT"}
+  self:RegisterEvents(self.ItemInfoListenerFrame)
   self.ItemInfoListenerFrame:SetScript("OnEvent", function(_, event, id, success)
     self:Get(id)
     for suffix in pairs(self.cache[id]) do
@@ -929,14 +941,14 @@ function ItemDB:InitChatListener()
   self.ChatListenerFrame:SetSize(0, 0)
   self.ChatListenerFrame:Show()
   
-  for _, channel in ipairs{"CHAT_MSG_CHANNEL", "CHAT_MSG_ADDON", "CHAT_MSG_BN_WHISPER", "CHAT_MSG_EMOTE", 
-                           "CHAT_MSG_GUILD", "CHAT_MSG_LOOT", "CHAT_MSG_OFFICER", "CHAT_MSG_OPENING", 
-                           "CHAT_MSG_PARTY", "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", 
-                           "CHAT_MSG_RAID_LEADER", "CHAT_MSG_RAID_WARNING", "CHAT_MSG_SAY", 
-                           "CHAT_MSG_TEXT_EMOTE", "CHAT_MSG_TRADESKILLS", "CHAT_MSG_WHISPER", 
-                           "CHAT_MSG_YELL"} do
-    self.ChatListenerFrame:RegisterEvent(channel)
-  end
+  
+  self.ChatListenerFrame.events =  {"CHAT_MSG_CHANNEL", "CHAT_MSG_ADDON", "CHAT_MSG_BN_WHISPER",
+                                    "CHAT_MSG_EMOTE", "CHAT_MSG_GUILD", "CHAT_MSG_LOOT",
+                                    "CHAT_MSG_OFFICER", "CHAT_MSG_OPENING", "CHAT_MSG_PARTY",
+                                    "CHAT_MSG_PARTY_LEADER", "CHAT_MSG_RAID", "CHAT_MSG_RAID_LEADER",
+                                    "CHAT_MSG_RAID_WARNING", "CHAT_MSG_SAY", "CHAT_MSG_TEXT_EMOTE",
+                                    "CHAT_MSG_TRADESKILLS", "CHAT_MSG_WHISPER", "CHAT_MSG_YELL"}
+  self:RegisterEvents(self.ChatListenerFrame)
   self.ChatListenerFrame:SetScript("OnEvent", function(_, event, message)
     for itemString in strgmatch(message, "item[%-?%d:]+") do
       local id, suffix = InterpretItem(itemString)
@@ -1007,9 +1019,9 @@ function ItemDB:InitGetItemInfoHook()
 end
 
 function ItemDB:Destructor()
-  self.QueryFrame            : SetScript("OnUpdate")
-  self.ItemInfoListenerFrame : SetScript("OnEvent")
-  self.ChatListenerFrame     : SetScript("OnEvent")
+  self.QueryFrame:Hide()
+  self:UnregisterEvents(self.ItemInfoListenerFrame)
+  self:UnregisterEvents(self.ChatListenerFrame)
   
   self.GetItemInfoHook = false
   self.tooltipHook     = false
@@ -1068,7 +1080,8 @@ function ItemDB:Init()
   end
   
   -- Shut down if a newer version is found
-  local timer = C_Timer.NewTicker(1, function()
+  local timer
+  timer = C_Timer.NewTicker(1, function()
     local _, minor = LibStub:GetLibrary(ADDON_NAME)
     if minor ~= MINOR then
       timer:Cancel()
