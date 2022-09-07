@@ -616,7 +616,8 @@ local storage
 
 local matchMeta = {}
 local itemMeta = {
-  __index     = function(_, k) assert(Item[k], "Item has no field: " .. tostring(k) .. ". Make sure ItemCache is up to date.") return Item[k] end,
+  -- GetDebugName because of Blizzard_DebugTools\Blizzard_TableInspectorAttributeDataProvider.lua:61
+  __index     = function(_, k) assert(k == "GetDebugName" or Item[k], "Item has no field: " .. tostring(k) .. ". Make sure ItemCache is up to date.") return Item[k] end,
   __newindex  = function(self, k, v) error("Item cannot be modified") end,
   __metatable = matchMeta,
   __eq        = function(item1, item2) return item1:GetID() == item2:GetID() and item1:GetSuffix() == item2:GetSuffix() end,
