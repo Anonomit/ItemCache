@@ -623,7 +623,7 @@ local itemMeta = {
   __eq        = function(item1, item2) return item1:GetID() == item2:GetID() and item1:GetSuffix() == item2:GetSuffix() end,
   __lt        = function(item1, item2) return (item1:GetName() or "") <  (item2:GetName() or "") end,
   __le        = function(item1, item2) return (item1:GetName() or "") <= (item2:GetName() or "") end,
-  __tostring  = function(self) return "Item " .. self:GetID() end,
+  __tostring  = function(self) return "Item " .. self:GetID() .. (self:HasSuffix() and (":" .. self:GetSuffix()) or "") end,
 }
 
 function ItemCache:DoesItemExistByID(id)
