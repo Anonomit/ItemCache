@@ -748,10 +748,10 @@ end
 -- save an item into storage
 function ItemDB:Store(item)
   if not storage[item:GetID()] then
-    if not item:GetSuffix() then
+    if not item:HasSuffix() then
       storage[item:GetID()] = {[0] = private(item)}
     end
-  elseif item:GetSuffix() and not storage[item:GetID()][item:GetSuffix()] then -- only store suffix items if the suffix matters
+  elseif item:HasSuffix() and not storage[item:GetID()][item:GetSuffix()] then -- only store suffix items if the suffix matters
     local noSuffixItem = self:Get(item:GetID())
     if noSuffixItem and item:GetName() ~= noSuffixItem:GetName() then
       storage[item:GetID()][item:GetSuffix()] = private(item)
@@ -1165,7 +1165,7 @@ function Item:GetSuffix()
   return private(self).suffix
 end
 function Item:HasSuffix()
-  return self:GetSuffix() ~= nil
+  return private(self).suffix ~= nil
 end
 function Item:GetIDSuffix()
   return self:GetID(), self:GetSuffix()
