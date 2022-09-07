@@ -1259,6 +1259,10 @@ function Item:GetInfoPacked()
   return {self:GetInfo()}
 end
 
+function Item:GetInfoInstant()
+  return GetItemInfoInstant(self:GetID())
+end
+
 
 
 function Item:IsUsableBy(classOrUnit)
@@ -1350,7 +1354,7 @@ function Item:GetNameLink()
   return name, link
 end
 function Item:GetTexture()
-  return (select(5, GetItemInfoInstant(self:GetString())))
+  return (select(5, self:GetInfoInstant()))
 end
 Item.GetIcon = Item.GetTexture
 function Item:GetNameLinkTexture()
@@ -1360,13 +1364,13 @@ end
 Item.GetNameLinkIcon = Item.GetNameLinkTexture
 
 function Item:GetType()
-  return (select(2, GetItemInfoInstant(self:GetString())))
+  return (select(2, self:GetInfoInstant()))
 end
 function Item:GetSubType()
-  return (select(3, GetItemInfoInstant(self:GetString())))
+  return (select(3, self:GetInfoInstant()))
 end
 function Item:GetTypeSubType()
-  local _, itemType, itemSubType = GetItemInfoInstant(self:GetString())
+  local _, itemType, itemSubType = self:GetInfoInstant()
   return itemType, itemSubType
 end
 
@@ -1412,7 +1416,7 @@ Item.IsBoU = Item.IsBindOnUse
 
 
 function Item:GetEquipLocation()
-  return (select(4, GetItemInfoInstant(self:GetString())))
+  return (select(4, self:GetInfoInstant()))
 end
 function Item:IsEquippable()     return self:GetEquipLocation() ~= ""                       and self:GetEquipLocation() ~= "INVTYPE_NON_EQUIP" end
 function Item:IsHelm()           return self:GetEquipLocation() == "INVTYPE_HEAD"           end
