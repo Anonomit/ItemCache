@@ -1062,6 +1062,10 @@ function Item:GetInfoInstant()
   return GetItemInfoInstant(self:GetID())
 end
 
+function Item:GetInfoInstantPacked()
+  return {self:GetInfoInstant()}
+end
+
 
 
 function Item:IsUsableBy(classOrUnit)
