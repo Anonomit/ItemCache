@@ -1,0 +1,12 @@
+<Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
+  
+  <Include file="libs\_libs.xml"/>
+  
+  <Include file="init\_init.xml"/>
+  
+  <Include file="Locale\_locale.xml"/>
+
+  <Include file="Config\_config.xml"/>
+  
+  <Include file="ItemCache.xml"/>
+</Ui>
