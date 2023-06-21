@@ -562,7 +562,7 @@ end
 function ItemDB:InitTooltipScanner()
   self.tooltipScanner = ItemCachetooltipScanner
   if not self.tooltipScanner then
-    self.tooltipScanner = CreateFrame("GameTooltip", "ItemCachetooltipScanner", UIParent, "GameTooltipTemplate")
+    self.tooltipScanner = CreateFrame("GameTooltip", "ItemCachetooltipScanner", nil, "GameTooltipTemplate")
     self.tooltipScanner:Hide()
     
     self.tooltipScanner.ClassesAllowed = format("^%s$"  , ITEM_CLASSES_ALLOWED:gsub("%d+%$", ""):gsub("%%s", "(.+)"))
@@ -945,7 +945,7 @@ function Item:GetInfo()
       -- local name, link, quality, level, minLevel, itemType, itemSubType, maxStackSize, equipLoc, texture, sellPrice, classID, subclassID, bindType = unpack(info)
       private(self).searchName = ItemCache:FormatSearchText(info[1])
       
-      ItemDB.tooltipScanner:SetOwner(UIParent, "ANCHOR_NONE")
+      ItemDB.tooltipScanner:SetOwner(WorldFrame, "ANCHOR_NONE")
       ItemDB.tooltipScanner:SetHyperlink("item:" .. self:GetID())
       for i = 1, ItemDB.tooltipScanner:NumLines() do
         local line = _G[ItemDB.tooltipScanner:GetName() .. "TextLeft" .. i]
