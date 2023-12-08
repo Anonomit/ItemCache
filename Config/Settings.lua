@@ -9,18 +9,21 @@ local Addon = LibStub("AceAddon-3.0"):GetAddon(ADDON_NAME)
 function Addon:MakeDefaultOptions()
   local fakeAddon = {
     db = {
-      profile = {
+      profile = {},
+      
+      global = {
+        UsePersistentStorage = true,
+        
         
         -- Debug options
         debug = false,
+        
+        debugShowLuaErrors   = true,
+        debugShowLuaWarnings = true,
           
         debugOutput = {
           ["*"] = false,
         },
-      },
-      
-      global = {
-        UsePersistentStorage = true,
       },
     },
   }

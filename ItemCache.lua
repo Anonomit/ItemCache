@@ -1231,39 +1231,37 @@ function Addon:CreateOptions()
 end
 
 function Addon:InitDB()
-  local configVersion = self.SemVer(self:GetOption"_VERSION" or tostring(self.Version))
-  if configVersion < self.Version then
-    -- Update data schema here
+  local configVersion = self.SemVer(self:GetOption"version" or tostring(self.version))
+  
+  if not self:GetOption"version" then -- first run
+    
+  else -- upgrade data schema
+    
   end
-  self:SetOption(tostring(self.Version), "_VERSION")
+  
+  self:SetOption(tostring(self.version), "version")
 end
 
 
 function Addon:OnInitialize()
-  self.Version   = self.SemVer(GetAddOnMetadata(ADDON_NAME, "Version"))
-  self.db        = self.AceDB:New(("%sDB"):format(ADDON_NAME)        , self:MakeDefaultOptions(), true)
-  self.dbDefault = self.AceDB:New(("%sDB_Default"):format(ADDON_NAME), self:MakeDefaultOptions(), true)
+  self.db        = self.AceDB:New(("%sDB"):format(ADDON_NAME), self:MakeDefaultOptions(), true)
+  self.dbDefault = self.AceDB:New({}                         , self:MakeDefaultOptions(), true)
   
-  self.chatCommands = {"zt", "zera", ADDON_NAME:lower()}
-  for _, chatCommand in ipairs(self.chatCommands) do
-    self:RegisterChatCommand(chatCommand, "OnChatCommand", true)
-  end
+  self:RunInitializeCallbacks()
   
   ItemDB:Init()
 end
 
 function Addon:OnEnable()
+  self.version = self.SemVer(GetAddOnMetadata(ADDON_NAME, "Version"))
   self:InitDB()
   self:GetDB().RegisterCallback(self, "OnProfileChanged", "InitDB")
   self:GetDB().RegisterCallback(self, "OnProfileCopied" , "InitDB")
   self:GetDB().RegisterCallback(self, "OnProfileReset"  , "InitDB")
   
-  self.chatArgs = {}
-  do
-    local function PrintVersion() self:Printf("Version: %s", tostring(self.version)) end
-    for _, arg in ipairs{"version", "vers", "ver", "v"} do self.chatArgs[arg] = PrintVersion end
-  end
-  self:CreateOptions()
+  self:InitChatCommands{"ic", ADDON_NAME:lower()}
+  
+  self:RunEnableCallbacks()
 end
 
 function Addon:OnDisable()

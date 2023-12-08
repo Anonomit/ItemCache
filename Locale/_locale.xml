@@ -1,5 +1,6 @@
 <Ui xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
   
-  <Script file="Locale\enUS.lua"/>
+  <Script file="LocaleAutomatic.lua"/>
   
+  <Script file="enUS.lua"/> <!-- Load enUS first -->
 </Ui>
