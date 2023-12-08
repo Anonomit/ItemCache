@@ -612,6 +612,14 @@ function ItemDB:InitQueryCallbacks()
               yieldThreshold = yieldThreshold - 1
               if item:Exists() then
                 queue:add(item)
+              else
+                private.itemsRemaining = private.itemsRemaining - 1
+                if private.itemsRemaining == 0 then
+                  if private.callback then
+                    private.callback(unpack(private))
+                  end
+                  tblremove(self.loadCallbacks, i)
+                end
               end
             end
           end
