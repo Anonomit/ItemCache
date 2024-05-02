@@ -1,7 +1,8 @@
-## Interface: 30403
+## Interface: 40400
+## Interface-Cata: 40400
 ## Interface-Wrath: 30403
-## Interface-Classic: 11500
-## Version: 1.4.2
+## Interface-Classic: 11502
+## Version: 1.4.3
 ## Author: Anonomit
 
 ## X-Curse-Project-ID: 591277
