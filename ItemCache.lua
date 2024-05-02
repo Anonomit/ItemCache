@@ -128,7 +128,7 @@ local IsItemUsable, IsItemUnusable
 do
   -- WARRIOR, PALADIN, HUNTER, ROGUE, PRIEST, DEATHKNIGHT, SHAMAN, MAGE, WARLOCK, MONK, DRUID, DEMONHUNTER
   local ID = {}
-  for i = 1, GetNumClasses() do
+  for i = 1, 15 do -- Don't use GetNumClasses() because there are currently gaps between the class IDs
     local classInfo = C_CreatureInfo.GetClassInfo(i)
     if classInfo then
       ID[classInfo.classFile] = classInfo.classID
