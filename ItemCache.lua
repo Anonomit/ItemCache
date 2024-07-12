@@ -126,7 +126,7 @@ local MY_CLASS = select(2, UnitClassBase"player")
 
 
 local CLASS_MAP_TO_ID = {}
-for i = 1, GetNumClasses() do
+for i = 1, 15 do -- Don't use GetNumClasses() because there are currently gaps between the class IDs
   local name, file, id = GetClassInfo(i)
   if name then
     local maleNames, femaleNames = LOCALIZED_CLASS_NAMES_MALE[file], LOCALIZED_CLASS_NAMES_FEMALE[file]
@@ -194,7 +194,9 @@ do
   
   if Addon.expansionLevel <= Addon.expansions.tbc then
     usableTypes[weapon][subWeapon.Axe1H][ID.ROGUE]   = nil
-    usableTypes[weapon][subWeapon.Polearm][ID.DRUID] = nil
+    
+    -- druids can now use polearms in era
+    -- usableTypes[weapon][subWeapon.Polearm][ID.DRUID] = nil
   end
   
   local dualWielders = Addon:MakeLookupTable{ID.DEATHKNIGHT, ID.HUNTER, ID.ROGUE, ID.SHAMAN, ID.WARRIOR}
