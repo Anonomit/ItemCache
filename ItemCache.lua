@@ -1159,6 +1159,16 @@ function Item:GetTypeSubType()
   local _, itemType, itemSubType = self:GetInfoInstant()
   return itemType, itemSubType
 end
+function Item:GetClass()
+  return (select(6, self:GetInfoInstant()))
+end
+function Item:GetSubClass()
+  return (select(7, self:GetInfoInstant()))
+end
+function Item:GetClassSubClass()
+  local itemClass, itemSubClass = select(6, self:GetInfoInstant())
+  return itemClass, itemSubClass
+end
 
 function Item:GetQuality()
   return (select(3, self:GetInfo()))
