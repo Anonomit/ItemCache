@@ -394,6 +394,9 @@ end
 local function IsItem(item)
   return type(item) == "table" and getmetatable(item) == matchMeta
 end
+function ItemCache:IsItem(...)
+  return IsItem(...)
+end
 
 local function MakeItem(id, suffix, uniqueID)
   if suffix == 0 then
