@@ -193,10 +193,10 @@ do
   
   
   if Addon.expansionLevel <= Addon.expansions.tbc then
-    usableTypes[weapon][subWeapon.Axe1H][ID.ROGUE]   = nil
-    
-    -- druids can now use polearms in era
-    -- usableTypes[weapon][subWeapon.Polearm][ID.DRUID] = nil
+    usableTypes[weapon][subWeapon.Axe1H][ID.ROGUE] = nil
+    if not Addon.isSoD then
+      usableTypes[weapon][subWeapon.Polearm][ID.DRUID] = nil
+    end
   end
   
   local dualWielders = Addon:MakeLookupTable{ID.DEATHKNIGHT, ID.HUNTER, ID.ROGUE, ID.SHAMAN, ID.WARRIOR}
