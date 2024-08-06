@@ -2,7 +2,7 @@
 ## Interface-Cata: 40400
 ## Interface-Classic: 11503
 
-## Version: 1.7.0
+## Version: 1.7.1
 ## Author: Anonomit
 
 ## X-Curse-Project-ID: 591277
