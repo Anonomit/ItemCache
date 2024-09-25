@@ -1,8 +1,8 @@
 ## Interface: 40400
 ## Interface-Cata: 40400
-## Interface-Classic: 11503
+## Interface-Classic: 11504
 
-## Version: 1.8.0
+## Version: 1.9.0
 ## Author: Anonomit
 
 ## X-Curse-Project-ID: 591277
