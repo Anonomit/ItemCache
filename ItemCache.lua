@@ -1116,6 +1116,7 @@ end
 function Item:RequiresCooking(...)        return self:RequiresSkill(PROFESSIONS_COOKING,                 ...) end
 function Item:RequiresFirstAid(...)       return self:RequiresSkill(PROFESSIONS_FIRST_AID,               ...) end
 function Item:RequiresFishing(...)        return self:RequiresSkill(PROFESSIONS_FISHING,                 ...) end
+function Item:RequiresArchaeology(...)    return self:RequiresSkill(PROFESSIONS_ARCHAEOLOGY,             ...) end
 
 -- these GlobalStrings are not appearing ingame (yet?)
   
