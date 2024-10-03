@@ -15,17 +15,15 @@ local L = LibStub("AceLocale-3.0"):GetLocale(ADDON_NAME)
 --  ╚██████╔╝███████╗██║ ╚████║███████╗██║  ██║██║  ██║███████╗    ╚██████╔╝██║        ██║   ██║╚██████╔╝██║ ╚████║███████║
 --   ╚═════╝ ╚══════╝╚═╝  ╚═══╝╚══════╝╚═╝  ╚═╝╚═╝  ╚═╝╚══════╝     ╚═════╝ ╚═╝        ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝
 
-local function MakeGeneralOptions(opts)
+local function MakeGeneralOptions(opts, categoryName)
   local self = Addon
   local GUI = self.GUI
-  local opts = GUI:CreateGroup(opts, ADDON_NAME, ADDON_NAME)
-  
-  
+  local opts = GUI:CreateGroup(opts, categoryName, categoryName, nil, "tab")
   GUI:SetDBType"Global"
+  
   
   local option = GUI:CreateToggle(opts, {"UsePersistentStorage"}, L["Use Persistent Storage"], L["If enabled, cache will be stored on logout. This may slightly increase loading time.|n|nIf disabled, cache will be rebuilt during each session. This will result in dramatically more cache misses."])
   
-  GUI:ResetDBType()
   
   return opts
 end
@@ -71,7 +69,7 @@ local function MakeDebugOptions(opts, categoryName)
   
   -- Debug Output
   do
-    local opts = GUI:CreateGroup(opts, GUI:Order(), "Output")
+    local opts = GUI:CreateGroup(opts, "Output", "Output")
     
     local disabled = not self:GetGlobalOption"debug"
     
@@ -87,17 +85,20 @@ local function MakeDebugOptions(opts, categoryName)
       local disabled = disabled or self:GetGlobalOption("debugOutput", "suppressAll")
       
       for i, data in ipairs{
-        {"optionSet", "Option Set"},
+        
+        {"optionsOpenedPre",  "Options Window Opened (Pre)"},
+        {"optionsOpenedPost", "Options Window Opened (Post)"},
+        {"optionsClosedPost", "Options Window Closed (Post)"},
+        {"optionSet",         "Option Set"},
+        {"cvarSet",           "CVar Set"},
       } do
         if i ~= 1 then
           GUI:CreateNewline(opts)
         end
-        GUI:CreateToggle(opts, {"debugOutput", data[1]}, data[2], nil, disabled).width = 2
+        GUI:CreateToggle(opts, {"debugOutput", data[1]}, format("%d: %s", i, data[2]), nil, disabled).width = 2
       end
     end
   end
-  
-  GUI:ResetDBType()
   
   return opts
 end
@@ -118,7 +119,7 @@ function Addon:MakeAddonOptions(chatCmd)
   
   local sections = {}
   for _, data in ipairs{
-    {MakeGeneralOptions, nil},
+    {MakeGeneralOptions, ADDON_NAME},
     {MakeDebugOptions,   self.L["Debug"], "debug", "db"},
   } do
     
@@ -133,8 +134,9 @@ function Addon:MakeAddonOptions(chatCmd)
       local OpenOptions_Old = OpenOptions
       OpenOptions = function(...)
         if not self:GetGlobalOption"debug" then
-          self:SetGlobalOption(true, "debug")
-          self:Debug("Debug mode enabled")
+          self:SetGlobalOptionConfig(true, "debug")
+          self:Debug"Debug mode enabled"
+          self:NotifyChange()
         end
         return OpenOptions_Old(...)
       end
@@ -150,13 +152,17 @@ function Addon:MakeAddonOptions(chatCmd)
     local opts = GUI:CreateOpts(title, "tab")
     
     for _, func in ipairs(sections) do
-      func(opts)
+      GUI:ResetDBType()
+      self:xpcall(function()
+        func(opts)
+      end)
+      GUI:ResetDBType()
     end
     
     return opts
   end)
   
-  self.AceConfigDialog:SetDefaultSize(ADDON_NAME, 700, 800)
+  self.AceConfigDialog:SetDefaultSize(ADDON_NAME, 700, 800) -- default is (700, 500)
 end
 
 

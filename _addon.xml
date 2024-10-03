@@ -9,4 +9,5 @@
   <Include file="Config\_config.xml"/>
   
   <Include file="ItemCache.xml"/>
+  <Script file="Addon.lua"/>
 </Ui>
