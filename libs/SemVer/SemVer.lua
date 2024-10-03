@@ -10,9 +10,13 @@ if not SemVer then return end -- No upgrade needed
 SemVer._VERSION = "1.0.0"
 
 
+local tinsert   = table.insert
+local tblConcat = table.concat
+local mathFloor = math.floor
+
 local function checkPositiveInteger(number, name)
   assert(number >= 0, name .. " must be a valid positive number")
-  assert(math.floor(number) == number, name .. " must be an integer")
+  assert(mathFloor(number) == number, name .. " must be an integer")
 end
 
 local function present(value)
@@ -163,9 +167,9 @@ function mt:__pow(other)
 end
 function mt:__tostring()
   local buffer = { ("%d.%d.%d"):format(self.major, self.minor, self.patch) }
-  if self.prerelease then table.insert(buffer, "-" .. self.prerelease) end
-  if self.build      then table.insert(buffer, "+" .. self.build) end
-  return table.concat(buffer)
+  if self.prerelease then tinsert(buffer, "-" .. self.prerelease) end
+  if self.build      then tinsert(buffer, "+" .. self.build) end
+  return tblConcat(buffer)
 end
 
 local function new(major, minor, patch, prerelease, build)
