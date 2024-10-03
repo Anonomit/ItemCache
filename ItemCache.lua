@@ -347,7 +347,7 @@ function CallbackController:Resume()
   return self
 end
 function CallbackController:Cancel()
-  if not self:IsComplete() and not self.cancelled then
+  if not self:IsComplete() and not private(self).cancelled then
     private(self).cancelled = true
     ItemDB:UnregisterCallbackController(self)
   end
