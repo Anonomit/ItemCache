@@ -25,7 +25,7 @@ local tonumber     = tonumber
 local format             = format
 local strsplit           = strsplit
 local wipe               = wipe
-local GetMouseFocus      = GetMouseFocus
+local GetMouseFoci       = GetMouseFoci
 local GetItemInfo        = GetItemInfo -- removes the need to bypass own hook
 local GetItemInfoInstant = GetItemInfoInstant
 local UnitExists         = UnitExists
@@ -771,7 +771,7 @@ function ItemDB:InitMouseoverHook()
         item:Cache()
       end
     elseif TradeSkillFrame and TradeSkillFrame:IsVisible() then
-      if GetMouseFocus():GetName() == "TradeSkillSkillIcon" then
+      if GetMouseFoci()[1]:GetName() == "TradeSkillSkillIcon" then
         local id, suffix, uniqueID = InterpretItem(GetTradeSkillItemLink(TradeSkillFrame.selectedSkill))
         if id then
           local item = self:Get(id, suffix, uniqueID)
@@ -781,7 +781,7 @@ function ItemDB:InitMouseoverHook()
         end
       else
         for i = 1, 8 do
-          if GetMouseFocus():GetName() == "TradeSkillReagent"..i then
+          if GetMouseFoci()[1]:GetName() == "TradeSkillReagent"..i then
             local id, suffix, uniqueID = InterpretItem(GetTradeSkillReagentItemLink(TradeSkillFrame.selectedSkill, i))
             if id then
               local item = self:Get(id, suffix, uniqueID)
